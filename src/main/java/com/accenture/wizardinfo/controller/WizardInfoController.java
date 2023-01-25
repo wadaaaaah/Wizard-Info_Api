@@ -1,14 +1,17 @@
 package com.accenture.wizardinfo.controller;
 
 import brave.Tracer;
+import com.accenture.wizardinfo.exception.WizardException;
 import com.accenture.wizardinfo.repository.WizardInfoRepository;
 import com.accenture.wizardinfo.entity.WizardInfo;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
 @RestController
+@Service
 @RequestMapping("/WizardInfoApi")
 public class WizardInfoController {
 
@@ -28,34 +31,35 @@ public class WizardInfoController {
     }
 
     @PostMapping("/add")
-    public void addWizard(@RequestBody WizardInfo wizard){
+    public ResponseEntity<?> addWizard(@RequestBody WizardInfo wizard){
         WizardInfo newWizard = new WizardInfo();
         newWizard.setName(wizard.getName());
         newWizard.setAge(wizard.getAge());
         newWizard.setJoinedDate(new Date(System.currentTimeMillis()));
 
-        repo.save(newWizard);
-
-        //return
+        return ResponseEntity.ok(repo.save(newWizard));
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteWizard(@PathVariable(value = "id") Long id){
+    public String deleteWizard(@PathVariable(value = "id") Long id){
 
         repo.deleteById(id);
+
+        return ("Wizard info successfully deleted");
+    }
+
+    @PutMapping("/update")
+    public WizardInfo updateWizard(@RequestBody WizardInfo wizardInfo) {
+        repo.findById(wizardInfo.getId()).orElseThrow(() ->
+                new WizardException(WizardException.INVALID_ID));
+
+        return repo.save(wizardInfo);
     }
 
     /*@PutMapping("/update/{id}")
-        public ResponseEntity<WizardInfo> updateWizard (@PathVariable(value = "id") Long wizardId,
-                @Valid @RequestBody WizardInfo wizardDetails) throws ResourseNotFoundException {
-            WizardInfo wizard = repo.findById(wizardId).orElseThrow(() ->
-                    new ResourseNotFoundException("Wizard not found"));
-        }*/
-
-    @PutMapping("/update/{id}")
     public void updateWizard(@RequestBody WizardInfo wizard){
-        /*wizard.setName(wizard.getName());
-        wizard.setAge(wizard.getAge());*/
+        *//*wizard.setName(wizard.getName());
+        wizard.setAge(wizard.getAge());*//*
         repo.save(wizard);
-    }
+    }*/
 }

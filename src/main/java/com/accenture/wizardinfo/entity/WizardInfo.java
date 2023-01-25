@@ -1,6 +1,5 @@
 package com.accenture.wizardinfo.entity;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,30 +8,21 @@ import java.util.Date;
 
 @Entity
 @Table(name = "wizard_info")
-@Data
+@Getter
+@Setter
 public class WizardInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    @Getter
-    @Setter
     private Long id;
 
-    @Getter
-    @Setter
     private String name;
 
-    @Getter
-    @Setter
     private int age;
 
-    @Getter
-    @Setter
+    @Column(name = "joined_date")
     private Date joinedDate;
 
-    @Getter
-    @Setter
     private boolean active=true;
 
 }
