@@ -55,11 +55,4 @@ public class WizardInfoController {
 
         return repo.save(wizardInfo);
     }
-
-    /*@PutMapping("/update/{id}")
-    public void updateWizard(@RequestBody WizardInfo wizard){
-        *//*wizard.setName(wizard.getName());
-        wizard.setAge(wizard.getAge());*//*
-        repo.save(wizard);
-    }*/
 }
